@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+
+    signingConfigs {
+        release
+    }
+
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.kotlin.architecture"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".development"
+            resValue "string", "app_name", "Kotlin(Dev)"
+            minifyEnabled false
+        }
+        release {
+            resValue "string", "app_name", "Kotlin"
+
+            minifyEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.release
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    // Kotlin core and ktx
+    api "androidx.core:core-ktx:$ktx_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    // LiveData
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    // Lifecycles only (without ViewModel or LiveData)
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // Saved state module for ViewModel
+    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    api "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$ktx_version"
+
+    // Navigation
+    api "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    api "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Dynamic Feature Module Support
+    api "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    // Material Design
+    api "com.google.android.material:material:$material_version"
+
+    // Constraint Layout
+    api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    // SSP for font size
+    api 'com.intuit.ssp:ssp-android:1.0.6'
+    // SDP for spacing
+    api 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+}
+
+Properties properties = new Properties()
+def propertiesFile = new File('keystore.properties')
+if (propertiesFile.canRead()) {
+    properties.load(new FileInputStream(propertiesFile))
+
+    if (properties != null && properties.containsKey('STORE_FILE') && properties.containsKey('KEY_ALIAS') && properties.containsKey('PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(properties['STORE_FILE'])
+        android.signingConfigs.release.storePassword = properties['PASSWORD']
+        android.signingConfigs.release.keyAlias = properties['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = properties['PASSWORD']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+
+} else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
+}
