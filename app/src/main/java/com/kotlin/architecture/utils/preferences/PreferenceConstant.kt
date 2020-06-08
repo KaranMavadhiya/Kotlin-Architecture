@@ -1,9 +1,9 @@
-package com.kotlindemo.utils.preferences
+package com.kotlin.architecture.utils.preferences
 
 object PreferenceConstant {
 
-    const val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
-    const val isUserLogin = "isUserLogin"
+    const val UNIQUE_ID = "UNIQUE_ID"
+    const val IS_USER_LOGIN = "IS_USER_LOGIN"
 
 
 }

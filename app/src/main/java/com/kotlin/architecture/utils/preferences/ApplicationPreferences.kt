@@ -1,4 +1,4 @@
-package com.kotlindemo.utils.preferences
+package com.kotlin.architecture.utils.preferences
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -23,6 +23,7 @@ buildscript {
 
         // Material Design
         material_version = "1.1.0"
+        appcompact_version = "1.1.0"
 
         // Constraint Layout
         constraint_layout_version = "1.1.3"

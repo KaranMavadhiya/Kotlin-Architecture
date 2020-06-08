@@ -46,7 +46,9 @@ captures/
 .idea/libraries
 # Android Studio 3 in .gitignore file.
 .idea/caches
+.idea/codeStyles
 .idea/modules.xml
+
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
@@ -54,7 +56,9 @@ captures/
 # Uncomment the following lines if you do not want to check your keystore files in.
 *.jks
 *.keystore
-keystore.properties
+
+/keystore.properties
+/private_key.pepk
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild

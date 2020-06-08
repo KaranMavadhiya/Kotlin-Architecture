@@ -18,13 +18,15 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCode
         versionName rootProject.versionName
-
     }
 
     buildTypes {
         debug {
             applicationIdSuffix ".development"
             resValue "string", "app_name", "Kotlin(Dev)"
+
+            buildConfigField "String", "API_BASE_URL", API_DEVELOPMENT_URL // Update API_DEVELOPMENT_URL into gradle.properties
+
             minifyEnabled false
         }
         release {
@@ -33,6 +35,8 @@ android {
             minifyEnabled true
             shrinkResources false
             signingConfig signingConfigs.release
+
+            buildConfigField "String", "API_BASE_URL", API_LIVE_URL // Update API_LIVE_URL into gradle.properties
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -46,12 +50,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 }
 
 dependencies {
+    api project(path: ':network')
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // Kotlin core and ktx
@@ -64,7 +71,7 @@ dependencies {
     // LiveData
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
-    // Lifecycles only (without ViewModel or LiveData)
+    // Lifecycle only (without ViewModel or LiveData)
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     // Saved state module for ViewModel
@@ -82,8 +89,9 @@ dependencies {
     // Dynamic Feature Module Support
     api "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
-    // Material Design
+    // Material Design and Androidx Appcompat
     api "com.google.android.material:material:$material_version"
+    api "androidx.appcompat:appcompat:$appcompact_version"
 
     // Constraint Layout
     api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
@@ -92,7 +100,6 @@ dependencies {
     api 'com.intuit.ssp:ssp-android:1.0.6'
     // SDP for spacing
     api 'com.intuit.sdp:sdp-android:1.0.6'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
 Properties properties = new Properties()

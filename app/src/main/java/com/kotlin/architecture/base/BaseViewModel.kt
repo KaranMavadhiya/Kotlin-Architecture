@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kotlindemo.utils.preferences.PreferenceConstant
-import com.kotlindemo.utils.preferences.getString
-import com.kotlindemo.utils.preferences.putString
+import com.kotlin.architecture.utils.preferences.PreferenceConstant
+import com.kotlin.architecture.utils.preferences.getString
+import com.kotlin.architecture.utils.preferences.putString
 import java.util.*
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,10 +28,10 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
         @get:Synchronized
         val uniqueId: String
             get() {
-                var uniqueID = PreferenceConstant.PREF_UNIQUE_ID.getString(null)
+                var uniqueID = PreferenceConstant.UNIQUE_ID.getString(null)
                 if (uniqueID == null) {
                     uniqueID = UUID.randomUUID().toString()
-                    PreferenceConstant.PREF_UNIQUE_ID.putString(uniqueID)
+                    PreferenceConstant.UNIQUE_ID.putString(uniqueID)
                 }
                 return uniqueID
             }

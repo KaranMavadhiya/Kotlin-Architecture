@@ -1,7 +1,7 @@
 package com.kotlin.architecture
 
 import android.app.Application
-import com.kotlindemo.utils.preferences.ApplicationPreferences
+import com.kotlin.architecture.utils.preferences.ApplicationPreferences
 
 class KotlinArchitecture : Application() {
 

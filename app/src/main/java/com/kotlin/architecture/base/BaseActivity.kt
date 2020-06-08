@@ -48,12 +48,8 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         /*
          * Logic for hide keyboard on click
          */
-        val inputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(
-            view.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
         /*
          * Logic to Prevent the Launch Twice if LoginRequestModel makes
