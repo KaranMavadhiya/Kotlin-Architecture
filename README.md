@@ -23,5 +23,7 @@ In this project we demonstrate MVVM Architecture with Data Binding and Kotiln Co
     |______ ApplicationPreferences.kt
     |______ PreferenceConstant.kt
     |______ SharedPreferences.kt
+    |____ EncryptionUtils.kt
+    |____ LogUtil.kt
 
 
