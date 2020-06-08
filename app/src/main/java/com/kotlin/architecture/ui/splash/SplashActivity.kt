@@ -1,6 +1,5 @@
 package com.kotlin.architecture.ui.splash
 
-import android.os.Handler
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
@@ -8,10 +7,13 @@ import com.kotlin.architecture.R
 import com.kotlin.architecture.base.BaseActivity
 import com.kotlin.architecture.databinding.ActivitySplashBinding
 import com.kotlin.architecture.ui.home.HomeActivity
+import kotlinx.coroutines.*
 
-class SplashActivity() : BaseActivity() , Animation.AnimationListener{
+class SplashActivity : BaseActivity() , Animation.AnimationListener {
 
     private lateinit var binding: ActivitySplashBinding
+
+    private val activityScope = CoroutineScope(Dispatchers.Main)
 
     private fun performNavigation() {
         startActivity(HomeActivity::class.java)
@@ -38,12 +40,18 @@ class SplashActivity() : BaseActivity() , Animation.AnimationListener{
     }
 
     override fun onAnimationStart(animation: Animation) {}
+
     override fun onAnimationEnd(animation: Animation) {
-        val delayMillis: Long = 3000
-        /*
-         * Handler is used to set some delay on this screen
-         */
-        Handler().postDelayed({ performNavigation() },delayMillis)
+        activityScope.launch {
+            delay(3000)
+            performNavigation()
+        }
     }
+
     override fun onAnimationRepeat(animation: Animation) {}
+
+    override fun onPause() {
+        activityScope.cancel()
+        super.onPause()
+    }
 }
