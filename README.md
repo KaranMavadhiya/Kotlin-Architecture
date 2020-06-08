@@ -11,17 +11,17 @@ In this project we demonstrate MVVM Architecture with Data Binding and Kotiln Co
     com.kotlin.architecture
     |__ KotlinArchitecture.kt (Application class)
     |__ base
-    |___ [BaseActivity.kt](/app/src/main/java/com/android/kickstart/activities/BaseActivity.kt)
-    |___ BaseFragment.kt
-    |___ BaseViewModel.kt
-    |___ ProgressDialog.kt
+    |____ BaseActivity.kt
+    |____ BaseFragment.kt
+    |____ BaseViewModel.kt
+    |____ ProgressDialog.kt
     |__ ui
-    |___ splash
-    |____ SplashActivity.kt (Splash screen with Kotlin coroutines)
+    |____ splash
+    |______ SplashActivity.kt (Splash screen with Kotlin coroutines)
     |__ utils
-    |___ preferences
-    |____ ApplicationPreferences.kt
-    |____ PreferenceConstant.kt
-    |____ SharedPreferences.kt
+    |____ preferences
+    |______ ApplicationPreferences.kt
+    |______ PreferenceConstant.kt
+    |______ SharedPreferences.kt
 
 
