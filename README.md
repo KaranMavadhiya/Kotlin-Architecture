@@ -2,7 +2,7 @@
 In this project we demonstrate MVVM Architecture with Data Binding and Kotiln Coroutines
 
 ### MVVM Architecture and Viewmodel Lifecycle
-![](https://res.cloudinary.com/karan-media/image/upload/c_scale,w_440/v1591362329/Android/MVVM/final-architecture_yhiun7.png) ![](https://res.cloudinary.com/karan-media/image/upload/v1591530905/Android/MVVM/viewmodel-lifecycle_mcty6g.png)
+![](https://res.cloudinary.com/karan-media/image/upload/c_scale,w_420/v1591362329/Android/MVVM/final-architecture_yhiun7.png) ![](https://res.cloudinary.com/karan-media/image/upload/v1591530905/Android/MVVM/viewmodel-lifecycle_mcty6g.png)
 
 ## Application Structure 
     com.kotlin.architecture
