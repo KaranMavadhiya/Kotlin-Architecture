@@ -7,19 +7,22 @@ import okhttp3.OkHttpClient
 
 object APIManager {
 
+    private const val baseUrl = BuildConfig.API_BASE_URL
+    private const val isDebug = true
+
     fun <T> getRetrofitInstance(interfaceClass: Class<T>): T {
-        return RetrofitClientFactory.getInstance(BuildConfig.API_BASE_URL, interfaceClass,true)
+        return RetrofitClientFactory.getInstance(baseUrl, interfaceClass,isDebug)
     }
 
     fun <T> getRetrofitInstance(header: HashMap<String, String>, interfaceClass: Class<T>): T {
-        return RetrofitClientFactory.getInstance(BuildConfig.API_BASE_URL,header, interfaceClass,true)
+        return RetrofitClientFactory.getInstance(baseUrl,header, interfaceClass,isDebug)
     }
 
     fun getOkHttpInstance(): OkHttpClient {
-        return OkHttpClientFactory.getInstance(true)
+        return OkHttpClientFactory.getInstance(isDebug)
     }
 
     fun getOkHttpInstance(header: HashMap<String, String>): OkHttpClient {
-        return OkHttpClientFactory.getInstance(header, true)
+        return OkHttpClientFactory.getInstance(header, isDebug)
     }
 }
