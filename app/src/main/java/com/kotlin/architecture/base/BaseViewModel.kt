@@ -11,10 +11,14 @@ import java.util.*
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var isLoading = MutableLiveData<Boolean>()
+    protected val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
+    val stateLiveData : LiveData<ViewState> = stateMutableLiveData
 
-    fun isLoading(): LiveData<Boolean> {
-        return isLoading
+    sealed class ViewState {
+        object Idle : ViewState()
+        object InProgress : ViewState()
+        data class Succeed<T> (var data: T) : ViewState()
+        data class Failed ( var status: Int = 0, var message: String? = null) : ViewState()
     }
 
     companion object {

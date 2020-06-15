@@ -25,19 +25,28 @@ android {
             applicationIdSuffix ".development"
             resValue "string", "app_name", "Kotlin(Dev)"
 
-            buildConfigField "String", "API_BASE_URL", API_DEVELOPMENT_URL // Update API_DEVELOPMENT_URL into gradle.properties
+            buildConfigField "String", "API_BASE_URL", API_DEVELOPMENT_URL
+            // Update API_DEVELOPMENT_URL into gradle.properties
 
             minifyEnabled false
         }
         release {
             resValue "string", "app_name", "Kotlin"
 
+            // Enables code shrinking, obfuscation, and optimization for only your project's release build type.
             minifyEnabled true
+
+            // Enables resource shrinking, which is performed by the Android Gradle plugin.
             shrinkResources false
+
             signingConfig signingConfigs.release
 
-            buildConfigField "String", "API_BASE_URL", API_LIVE_URL // Update API_LIVE_URL into gradle.properties
+            buildConfigField "String", "API_BASE_URL", API_LIVE_URL
+            // Update API_LIVE_URL into gradle.properties
 
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,6 +63,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    dynamicFeatures = [':registration']
+
 }
 
 dependencies {

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kotlin.architecture">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".KotlinArchitecture"
         android:allowBackup="true"
@@ -13,11 +16,6 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.home.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
             android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splashscreen">
@@ -27,6 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

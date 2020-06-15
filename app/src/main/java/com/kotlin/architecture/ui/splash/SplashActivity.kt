@@ -2,16 +2,14 @@ package com.kotlin.architecture.ui.splash
 
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.databinding.DataBindingUtil
 import com.kotlin.architecture.R
-import com.kotlin.architecture.base.BaseActivity
+import com.kotlin.architecture.base.BaseViewModel
+import com.kotlin.architecture.base.DataBindingBaseActivity
 import com.kotlin.architecture.databinding.ActivitySplashBinding
 import com.kotlin.architecture.ui.home.HomeActivity
 import kotlinx.coroutines.*
 
-class SplashActivity : BaseActivity() , Animation.AnimationListener {
-
-    private lateinit var binding: ActivitySplashBinding
+class SplashActivity : DataBindingBaseActivity<ActivitySplashBinding, BaseViewModel>(BaseViewModel::class.java) , Animation.AnimationListener {
 
     private val activityScope = CoroutineScope(Dispatchers.Main)
 
@@ -25,9 +23,6 @@ class SplashActivity : BaseActivity() , Animation.AnimationListener {
     }
 
     override fun initializeComponents() {
-        binding = DataBindingUtil.setContentView(this,
-            R.layout.activity_splash
-        )
         binding.lifecycleOwner = this
 
         val loadAnimation = AnimationUtils.loadAnimation(applicationContext,
@@ -43,7 +38,7 @@ class SplashActivity : BaseActivity() , Animation.AnimationListener {
 
     override fun onAnimationEnd(animation: Animation) {
         activityScope.launch {
-            delay(3000)
+            delay(2000)
             performNavigation()
         }
     }
