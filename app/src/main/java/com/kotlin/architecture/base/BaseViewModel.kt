@@ -11,13 +11,13 @@ import java.util.*
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    protected val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
+    val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
     val stateLiveData : LiveData<ViewState> = stateMutableLiveData
 
     sealed class ViewState {
         object Idle : ViewState()
         object InProgress : ViewState()
-        data class Succeed<T> (var data: T) : ViewState()
+        data class Succeed<T>(var data: T) : ViewState()
         data class Failed ( var status: Int = 0, var message: String? = null) : ViewState()
     }
 
