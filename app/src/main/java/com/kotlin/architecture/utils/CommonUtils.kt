@@ -41,23 +41,19 @@ object CommonUtils{
 
     /**
      * Validate password
-     * (^(?=[a-zA-Z0-9])(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%_\-.]).{8,20})
-     * (			      # Start of group
-     * ^(?=[a-zA-Z0-9])   # Must start with alpha numeric not special character
-     * (?=.*\d)           # Must contains one digit from 0-9
-     * (?=.*[a-z])	      # Must contains one lowercase characters
-     * (?=.*[A-Z])	      # Must contains one uppercase characters
-     * (?=.*[!@#$%_\-.])  # Must contains one special symbols in the list "!@#$%_\-."
-     * .		          # Match anything with previous condition checking
-     * {8,20}	          # Length at least 8 characters and maximum of 20
-     * )			      # End of group
+     * ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$
+     * ^(?=.*?[A-Z]          # At least one upper case A-Z
+     * (?=.*?[a-z])          # At least one lower case a-z
+     * (?=.*?[0-9])          # At least one digit 0-9
+     * (?=.*?[#?!@$%^&*-])	 # At least one special character
+     * .{8,20}	             # Minimum eight and Maximum 20 in length
      *
      * @param password Password string
      * @return boolean true if password match above condition else false
      */
     fun isValidPassword(password: String): Boolean {
         val pattern =
-            Pattern.compile("(^(?=[a-zA-Z0-9])(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%_\\-.]).{8,20})")
+            Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,20}\$")
         return pattern.matcher(password).matches()
     }
 

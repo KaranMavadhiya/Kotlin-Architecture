@@ -21,20 +21,17 @@
         tools:context=".ui.login.LoginFragment">
 
         <include
-            android:id="@+id/layout_header"
+            android:id="@+id/layoutHeader"
             layout="@layout/layout_common_header"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageLogo"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_130sdp"
-            android:src="@drawable/logo"
-            app:layout_constraintBottom_toTopOf="@+id/inputEmail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_header" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputEmail"
@@ -43,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
-            app:layout_constraintTop_toBottomOf="@+id/imageLogo"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -52,132 +50,133 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/str_email_address"
-                android:text="@={loginViewModel.inputEmail}"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="@={loginViewModel.inputEmail}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputPassword"
-            style="@style/Widget.textInputLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-            app:layout_constraintStart_toStartOf="@+id/inputEmail"
-            app:layout_constraintTop_toBottomOf="@+id/inputEmail">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputPassword"
+                style="@style/Widget.textInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:endIconMode="password_toggle"
+                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
+                app:layout_constraintStart_toStartOf="@+id/inputEmail"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editPassword"
-                style="@style/textInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/str_password"
-                android:text="@={loginViewModel.inputPassword}"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editPassword"
+                    style="@style/textInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/str_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:text="@={loginViewModel.inputPassword}" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textForgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/_8sdp"
-            android:fontFamily="@font/frank_ruhl_libre"
-            android:onClick="@{(view)-> itemClickListener.onItemClickListener(view)}"
-            android:padding="@dimen/_8sdp"
-            android:text="@string/str_forgot_password"
-            android:textSize="@dimen/_13ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_8sdp"
+                android:fontFamily="@font/frank_ruhl_libre"
+                android:onClick="@{(view)-> itemClickListener.onItemClickListener(view)}"
+                android:padding="@dimen/_8sdp"
+                android:text="@string/str_forgot_password"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
 
-        <Button
-            android:id="@+id/buttonSubmit"
-            style="@style/Widget.buttonStyle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_48sdp"
-            android:layout_margin="@dimen/_8sdp"
-            android:onClick="@{(view)-> loginViewModel.signIn()}"
-            android:text="@string/str_sign_in"
-            app:layout_constraintEnd_toEndOf="@+id/inputPassword"
-            app:layout_constraintStart_toStartOf="@+id/inputPassword"
-            app:layout_constraintTop_toBottomOf="@+id/textForgotPassword" />
+            <Button
+                android:id="@+id/buttonSubmit"
+                style="@style/Widget.buttonStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_margin="@dimen/_8sdp"
+                android:onClick="@{(view)-> loginViewModel.signIn()}"
+                android:text="@string/str_sign_in"
+                app:layout_constraintEnd_toEndOf="@+id/inputPassword"
+                app:layout_constraintStart_toStartOf="@+id/inputPassword"
+                app:layout_constraintTop_toBottomOf="@+id/textForgotPassword" />
 
-        <View
-            android:id="@+id/viewDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="@+id/textOr"
-            app:layout_constraintEnd_toEndOf="@+id/buttonSubmit"
-            app:layout_constraintStart_toStartOf="@+id/buttonSubmit"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSubmit" />
+            <View
+                android:id="@+id/viewDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/textOr"
+                app:layout_constraintEnd_toEndOf="@+id/buttonSubmit"
+                app:layout_constraintStart_toStartOf="@+id/buttonSubmit"
+                app:layout_constraintTop_toTopOf="@+id/textOr" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textOr"
-            style="@style/textStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:padding="@dimen/_8sdp"
-            android:text="@string/str_or"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSubmit" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textOr"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/colorWhite"
+                android:padding="@dimen/_8sdp"
+                android:text="@string/str_or"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSubmit" />
 
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/buttonFacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:onClick="@{(view)-> loginViewModel.facebook()}"
-            android:src="@drawable/ic_social_facebook"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonGoogle"
-            app:layout_constraintEnd_toStartOf="@+id/buttonGoogle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/buttonGoogle" />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/buttonFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:onClick="@{(view)-> loginViewModel.facebook()}"
+                android:src="@drawable/ic_social_facebook"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonGoogle"
+                app:layout_constraintEnd_toStartOf="@+id/buttonGoogle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/buttonGoogle" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/buttonGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_social_google"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textOr"
-            android:onClick="@{(view)-> loginViewModel.google()}"/>
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/buttonGoogle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@android:color/transparent"
+                android:onClick="@{(view)-> loginViewModel.google()}"
+                android:src="@drawable/ic_social_google"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textOr" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/buttonTwitter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:onClick="@{(view)-> loginViewModel.twitter()}"
-            android:src="@drawable/ic_social_twitter"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonGoogle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonGoogle"
-            app:layout_constraintTop_toTopOf="@+id/buttonGoogle" />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/buttonTwitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:onClick="@{(view)-> loginViewModel.twitter()}"
+                android:src="@drawable/ic_social_twitter"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonGoogle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonGoogle"
+                app:layout_constraintTop_toTopOf="@+id/buttonGoogle" />
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_16sdp"
             android:onClick="@{(view)-> itemClickListener.onItemClickListener(view)}"
             android:padding="@dimen/_8sdp"
             android:text="@string/str_don_t_have_an_account"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonGoogle" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

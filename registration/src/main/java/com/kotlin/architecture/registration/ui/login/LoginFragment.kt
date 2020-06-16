@@ -55,7 +55,6 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
 
     private fun animateUI() {
         with(ViewUtil) {
-            animateView(binding.imageLogo,300,500)
             animateView(binding.inputEmail,300,500)
             animateView(binding.inputPassword,300,500)
 

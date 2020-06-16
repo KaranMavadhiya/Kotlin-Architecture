@@ -4,8 +4,9 @@
     <string name="screen_registration">Sign Up</string>
     <string name="screen_forgot_password">Forgot Password</string>
 
-    <string name="str_first_name">First Name</string>
-    <string name="str_last_name">Last Name</string>
+    <string name="str_welcome">Welcome!</string>
+
+    <string name="str_full_name">Full Name</string>
     <string name="str_email_address">Email Address</string>
     <string name="str_code">Country</string>
     <string name="str_mobile_number">Mobile Number</string>
@@ -24,11 +25,11 @@
     <string name="str_change_password">Change Password</string>
     <string name="str_sign_out">Sign out</string>
 
-    <string name="str_terms_and_condition_privacy_policy"><![CDATA[I agree to your Terms & Condition and Privacy Policy]]></string>
-    <string name="str_terms_and_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="str_terms_of_service_and_privacy_policy"><![CDATA[By signing up you accept the Terms of Service and Privacy Policy]]></string>
+    <string name="str_terms_and_service"><![CDATA[Terms of Service]]></string>
     <string name="str_privacy_policy"><![CDATA[Privacy Policy]]></string>
 
-    <string name="str_password_hint">Password must be 8–20 characters, alphanumeric and contains one special character which should not be first character</string>
+    <string name="str_password_hint">Password must be 8–20 characters, alphanumeric and contains one special character</string>
 
     <string name="err_please_enter_full_name">Please enter full name.</string>
     <string name="err_please_enter_email_address">Please enter email address.</string>

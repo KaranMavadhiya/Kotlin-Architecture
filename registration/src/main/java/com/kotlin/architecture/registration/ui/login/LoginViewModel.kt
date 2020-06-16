@@ -16,6 +16,7 @@ import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.Constants
 import com.network.base.BaseResponseModel
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel(application: Application) : BaseViewModel(application), Observable {
@@ -44,8 +45,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
 
                 val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString(), Constants.PLATFORM, uniqueId)
 
-                    APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object :
-                        retrofit2.Callback<BaseResponseModel<UserModel>> {
+                    APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object : Callback<BaseResponseModel<UserModel>> {
 
                         override fun onFailure(call: Call<BaseResponseModel<UserModel>>, t: Throwable) {
                             stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR,context.getString(R.string.str_error_message))
@@ -55,7 +55,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
 
                             if (response.body() != null && response.body()!!.status == ErrorCode.SUCCESS && response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
                                 val responseModel =  response.body()!!.data
-                                responseModel?.let { ViewState.Succeed(it) }
+                                stateMutableLiveData.value = ViewState.Succeed(responseModel)
                             }else{
                                 stateMutableLiveData.value = ViewState.Failed(response.body()!!.statusCode, response.body()!!.message)
                             }
