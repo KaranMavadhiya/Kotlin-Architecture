@@ -1,7 +1,6 @@
 package com.kotlin.architecture.registration.ui.login
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kotlin.architecture.api.APIManager
 import com.kotlin.architecture.base.BaseViewModel
@@ -17,9 +16,9 @@ import retrofit2.Response
 
 class LoginRepository private constructor() {
 
-    val stateMutableLiveData = MutableLiveData<BaseViewModel.ViewState>(BaseViewModel.ViewState.InProgress)
-
     fun callLoginApi(context: Context, loginRequestModel: LoginRequestModel): MutableLiveData<BaseViewModel.ViewState> {
+        val stateMutableLiveData = MutableLiveData<BaseViewModel.ViewState>(BaseViewModel.ViewState.InProgress)
+
         APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object : Callback<BaseResponseModel<UserModel>> {
 
             override fun onFailure(call: Call<BaseResponseModel<UserModel>>, t: Throwable) {
