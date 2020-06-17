@@ -25,7 +25,6 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
         // set up UI
         setupUI()
 
-
         with(binding){
 
             // set item click listener with data binding
@@ -73,6 +72,7 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
 
     override fun onItemClickListener(view: View) {
         when(view.id) {
+            R.id.image_back -> requireActivity().onBackPressed()
             R.id.textForgotPassword ->  Navigation.findNavController(binding.textForgotPassword).navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
             R.id.textSignUp -> Navigation.findNavController(binding.buttonSubmit).navigate(R.id.action_loginFragment_to_signupFragment)
         }
@@ -87,17 +87,16 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
     private fun manageState(viewState: BaseViewModel.ViewState) {
         when (viewState) {
             BaseViewModel.ViewState.Idle -> {
-
                 with(binding) {
                     inputEmail.error = null
                     inputPassword.error = null
                 }
-
             }
             BaseViewModel.ViewState.InProgress -> {
-
+                showProgressDialog(requireActivity().supportFragmentManager)
             }
             is BaseViewModel.ViewState.Failed -> {
+                dismissProgressDialog()
 
                 when (viewState.status) {
                     ErrorCode.STATUS_CODE_EMAIL_VALIDATION -> {
@@ -112,9 +111,9 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
                 }
             }
             is BaseViewModel.ViewState.Succeed<*> -> {
-                Log.e("LOGIN",  "LOGIN Response")
+                dismissProgressDialog()
 
-                if(viewState.data is UserModel){
+                if(viewState.data  != null && viewState.data is UserModel){
                     val userModel = viewState.data as UserModel
 
                     Log.e("LOGIN",  userModel._id)

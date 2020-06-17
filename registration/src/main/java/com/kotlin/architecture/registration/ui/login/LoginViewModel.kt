@@ -5,19 +5,12 @@ import android.text.TextUtils
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
-import com.kotlin.architecture.api.APIManager
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
-import com.kotlin.architecture.registration.api.RegistrationInterceptor
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
-import com.kotlin.architecture.registration.api.response.UserModel
 import com.kotlin.architecture.registration.utils.ErrorCode
 import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.Constants
-import com.network.base.BaseResponseModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginViewModel(application: Application) : BaseViewModel(application), Observable {
 
@@ -28,6 +21,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
 
     @Bindable
     val inputPassword = MutableLiveData<String>()
+
 
     fun signIn() {
         when {
@@ -41,26 +35,30 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
                 stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_PASSWORD_VALIDATION,context.getString(R.string.err_please_enter_password))
             }
             else -> {
-                stateMutableLiveData.value = ViewState.InProgress
-
                 val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString(), Constants.PLATFORM, uniqueId)
 
-                    APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object : Callback<BaseResponseModel<UserModel>> {
+               /* stateMutableLiveData.value = ViewState.InProgress
+                APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object :
+                    Callback<BaseResponseModel<UserModel>> {
 
-                        override fun onFailure(call: Call<BaseResponseModel<UserModel>>, t: Throwable) {
-                            stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR,context.getString(R.string.str_error_message))
+                    override fun onFailure(call: Call<BaseResponseModel<UserModel>>, t: Throwable) {
+                        stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR, context.getString(R.string.str_error_message))
+                    }
+
+                    override fun onResponse(call: Call<BaseResponseModel<UserModel>>, response: Response<BaseResponseModel<UserModel>>) {
+                        if (response.body() == null) {
+                            stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR, context.getString(R.string.str_error_message))
+                            return
+                        } else if ( response.body()!!.status == ErrorCode.SUCCESS &&  response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
+                            val responseModel =   response.body()!!.data
+                            stateMutableLiveData.value = ViewState.Succeed(responseModel)
+                        }else{
+                            stateMutableLiveData.value = ViewState.Failed(  response.body()!!.statusCode,  response.body()!!.message)
                         }
+                    }
+                })*/
 
-                        override fun onResponse(call: Call<BaseResponseModel<UserModel>>, response: Response<BaseResponseModel<UserModel>>) {
-
-                            if (response.body() != null && response.body()!!.status == ErrorCode.SUCCESS && response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
-                                val responseModel =  response.body()!!.data
-                                stateMutableLiveData.value = ViewState.Succeed(responseModel)
-                            }else{
-                                stateMutableLiveData.value = ViewState.Failed(response.body()!!.statusCode, response.body()!!.message)
-                            }
-                        }
-                    })
+                stateMutableLiveData.value =  LoginRepository.getInstance().callLoginApi(context, loginRequestModel).value
             }
         }
     }

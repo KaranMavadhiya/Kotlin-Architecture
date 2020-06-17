@@ -23,9 +23,10 @@
 
         <include
             android:id="@+id/layout_header"
-            layout="@layout/layout_common_header"
+            layout="@layout/layout_registration_header"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            bind:headerItemClickListener="@{itemClickListener}"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
 import com.google.android.material.textview.MaterialTextView
 import com.kotlin.architecture.base.DataBindingBaseFragment
 import com.kotlin.architecture.base.ItemClickListener
@@ -91,6 +92,8 @@ class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupView
     }
 
     override fun onItemClickListener(view: View) {
-
+        when(view.id) {
+            R.id.image_back -> requireActivity().onBackPressed()
+        }
     }
 }

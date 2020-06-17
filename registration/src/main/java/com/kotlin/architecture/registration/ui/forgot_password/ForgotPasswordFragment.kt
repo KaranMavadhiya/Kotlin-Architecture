@@ -35,6 +35,8 @@ class ForgotPasswordFragment : DataBindingBaseFragment<FragmentForgotPasswordBin
     }
 
     override fun onItemClickListener(view: View) {
-
+        when(view.id) {
+            R.id.image_back -> requireActivity().onBackPressed()
+        }
     }
 }

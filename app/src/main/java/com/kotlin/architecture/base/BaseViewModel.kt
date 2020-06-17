@@ -11,7 +11,7 @@ import java.util.*
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
+    var stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
     val stateLiveData : LiveData<ViewState> = stateMutableLiveData
 
     sealed class ViewState {
