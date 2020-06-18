@@ -25,14 +25,14 @@ class LoginRepository private constructor() {
                 stateMutableLiveData.value = BaseViewModel.ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR, context.getString(R.string.str_error_message))
             }
 
-            override fun onResponse(call: Call<BaseResponseModel<UserModel>>, response: Response<BaseResponseModel<UserModel>>) {
-                if(response.body() == null){
+            override fun onResponse(call: Call<BaseResponseModel<UserModel>>, response: Response<BaseResponseModel<UserModel>>){
+                if (response.body() == null) {
                     stateMutableLiveData.value = BaseViewModel.ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR, context.getString(R.string.str_error_message))
-                }else if ( response.body()!!.status == ErrorCode.SUCCESS &&  response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
-                    val responseModel =  response.body()!!.data
+                } else if ( response.body()!!.status == ErrorCode.SUCCESS &&  response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
+                    val responseModel =   response.body()!!.data
                     stateMutableLiveData.value = BaseViewModel.ViewState.Succeed(responseModel)
                 }else{
-                    stateMutableLiveData.value = BaseViewModel.ViewState.Failed(response.body()!!.statusCode, response.body()!!.message)
+                    stateMutableLiveData.value = BaseViewModel.ViewState.Failed(  response.body()!!.statusCode,  response.body()!!.message)
                 }
             }
         })

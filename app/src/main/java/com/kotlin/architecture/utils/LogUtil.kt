@@ -1,6 +1,7 @@
 package com.kotlin.architecture.utils
 
 import android.util.Log
+import com.kotlin.architecture.BuildConfig
 
 /**
  * A pack of log methods for reading/writing to [Log].
@@ -9,7 +10,7 @@ object LogUtil {
 
     private const val LOG_PREFIX = "LOG_"
     private const val MAX_LOG_SIZE = 2000
-    private var LOG_ENABLED = true
+    private var LOG_ENABLED = BuildConfig.DEBUG
 
     /**
      * Helper method to write a String value to [Log].
@@ -18,7 +19,7 @@ object LogUtil {
      * @param message String: The message you would like logged.
      */
     fun w(tag: String, message: String) {
-        if (LOG_ENABLED) Log.w(LOG_PREFIX + tag, message)
+        if (LOG_ENABLED) Log.w(tag.prependIndent(LOG_PREFIX), message)
     }
 
     /**
@@ -28,7 +29,7 @@ object LogUtil {
      * @param message String: The message you would like logged.
      */
     fun d(tag: String, message: String) {
-        if (LOG_ENABLED) Log.d(LOG_PREFIX + tag, message)
+        if (LOG_ENABLED) Log.d(tag.prependIndent(LOG_PREFIX), message)
     }
 
     /**
@@ -43,7 +44,7 @@ object LogUtil {
                 val start = i * MAX_LOG_SIZE
                 var end = (i + 1) * MAX_LOG_SIZE
                 end = if (end > message.length) message.length else end
-                Log.e(LOG_PREFIX + tag, message.substring(start, end))
+                Log.e(tag.prependIndent(LOG_PREFIX), message.substring(start, end))
             }
         }
     }
@@ -66,7 +67,7 @@ object LogUtil {
      * @param message String: The message you would like logged.
      */
     fun i(tag: String, message: String) {
-        if (LOG_ENABLED) Log.i(LOG_PREFIX + tag, message)
+        if (LOG_ENABLED) Log.i(tag.prependIndent(LOG_PREFIX), message)
     }
 
     /**
@@ -76,6 +77,6 @@ object LogUtil {
      * @param message String: The message you would like logged.
      */
     fun v(tag: String, message: String) {
-        if (LOG_ENABLED) Log.v(LOG_PREFIX + tag, message)
+        if (LOG_ENABLED) Log.v(tag.prependIndent(LOG_PREFIX), message)
     }
 }

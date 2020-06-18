@@ -1,7 +1,6 @@
 package com.kotlin.architecture.registration.ui.login
 
 import android.app.Application
-import android.text.TextUtils
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,6 @@ import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
 import com.kotlin.architecture.registration.utils.ErrorCode
 import com.kotlin.architecture.utils.CommonUtils
-import com.kotlin.architecture.utils.Constants
 
 class LoginViewModel(application: Application) : BaseViewModel(application), Observable {
 
@@ -25,19 +23,19 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
 
     fun signIn() {
         when {
-            TextUtils.isEmpty(inputEmail.value) -> {
+            inputEmail.value.isNullOrEmpty() -> {
                 stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_EMAIL_VALIDATION,context.getString(R.string.err_please_enter_email_address))
             }
             !inputEmail.value?.let { CommonUtils.isValidEmailAddress(it) }!! -> {
                 stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_EMAIL_VALIDATION,context.getString(R.string.err_please_enter_valid_email_address))
             }
-            TextUtils.isEmpty(inputPassword.value) -> {
+            inputPassword.value.isNullOrEmpty() -> {
                 stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_PASSWORD_VALIDATION,context.getString(R.string.err_please_enter_password))
             }
             else -> {
-                val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString(), Constants.PLATFORM, uniqueId)
+                val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString())
 
-               /* stateMutableLiveData.value = ViewState.InProgress
+                /*stateMutableLiveData.value = ViewState.InProgress
                 APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object :
                     Callback<BaseResponseModel<UserModel>> {
 
@@ -48,8 +46,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
                     override fun onResponse(call: Call<BaseResponseModel<UserModel>>, response: Response<BaseResponseModel<UserModel>>) {
                         if (response.body() == null) {
                             stateMutableLiveData.value = ViewState.Failed(ErrorCode.STATUS_CODE_SERVER_ERROR, context.getString(R.string.str_error_message))
-                            return
-                        } else if ( response.body()!!.status == ErrorCode.SUCCESS &&  response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
+                        } else if (response.body()!!.status == ErrorCode.SUCCESS &&  response.body()!!.statusCode == ErrorCode.STATUS_CODE_SUCCESS) {
                             val responseModel =   response.body()!!.data
                             stateMutableLiveData.value = ViewState.Succeed(responseModel)
                         }else{
@@ -59,6 +56,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
                 })*/
 
                 stateMutableLiveData.value =  LoginRepository.getInstance().callLoginApi(context, loginRequestModel).value
+
             }
         }
     }

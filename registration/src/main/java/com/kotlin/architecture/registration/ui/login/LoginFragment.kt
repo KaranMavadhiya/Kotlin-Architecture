@@ -1,6 +1,5 @@
 package com.kotlin.architecture.registration.ui.login
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -13,6 +12,7 @@ import com.kotlin.architecture.registration.api.response.UserModel
 import com.kotlin.architecture.registration.databinding.FragmentLoginBinding
 import com.kotlin.architecture.registration.utils.ErrorCode
 import com.kotlin.architecture.utils.CommonUtils
+import com.kotlin.architecture.utils.LogUtil
 import com.kotlin.architecture.utils.ViewUtil
 
 class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class.java),  ItemClickListener {
@@ -116,10 +116,10 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
                 if(viewState.data  != null && viewState.data is UserModel){
                     val userModel = viewState.data as UserModel
 
-                    Log.e("LOGIN",  userModel._id)
-                    Log.e("LOGIN",  userModel.name)
-                    Log.e("LOGIN",  userModel.emailId)
-                    Log.e("LOGIN",  userModel.access_token)
+                    LogUtil.e("LOGIN",  userModel.id)
+                    LogUtil.e("LOGIN",  userModel.name)
+                    LogUtil.e("LOGIN",  userModel.email)
+                    LogUtil.e("LOGIN",  userModel.accessToken)
                 }
             }
         }

@@ -5,14 +5,14 @@ import com.squareup.moshi.Json
 data class UserModel(
 
     @Json(name = "_id")
-    var _id: String,
+    var id: String,
 
     @Json(name = "name")
     var name: String,
 
     @Json(name = "emailId")
-    var emailId: String,
+    var email: String,
 
     @Json(name = "access_token")
-    var access_token: String
+    var accessToken: String
 )

@@ -1,16 +1,23 @@
 package com.network.retrofit
 
 import com.network.okhttp.OkHttpClientFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitClientFactory {
 
     private fun getService(baseUrl: String, header: HashMap<String, String>?, isDebug: Boolean): Retrofit {
+
+        val moshiConverter = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(OkHttpClientFactory.getInstance(header, isDebug))
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshiConverter))
             .build()
     }
 

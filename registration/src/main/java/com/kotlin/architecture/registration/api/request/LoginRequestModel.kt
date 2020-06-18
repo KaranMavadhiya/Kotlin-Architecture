@@ -1,18 +1,19 @@
 package com.kotlin.architecture.registration.api.request
 
+import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.Constants
 import com.squareup.moshi.Json
 
 data class LoginRequestModel(
     @Json(name = "emailId")
-    var emailId: String,
+    var email: String,
 
     @Json(name = "password")
-    var password: String,
+    var password: String
+) {
+    @Json(name = "deviceToken")
+    var deviceToken: String = CommonUtils.uniqueId
 
     @Json(name = "deviceType")
-    var deviceType: String = Constants.PLATFORM,
-
-    @Json(name = "deviceToken")
-    var deviceToken: String
-)
+    var deviceType: String = Constants.PLATFORM
+}
