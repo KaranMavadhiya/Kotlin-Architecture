@@ -1,30 +1,58 @@
 # Kotlin-Architecture
-In this project we demonstrate MVVM Architecture with Data Binding and Kotiln Coroutines
+In this project we demonstrate MVVM Architecture with Data Binding and Navigation Componant
 
 ### MVVM Architecture and Viewmodel Lifecycle
 ![](https://res.cloudinary.com/karan-media/image/upload/c_scale,w_420/v1591362329/Android/MVVM/final-architecture_yhiun7.png) ![](https://res.cloudinary.com/karan-media/image/upload/v1591530905/Android/MVVM/viewmodel-lifecycle_mcty6g.png)
 
 ## Application Structure 
-    com.kotlin.architecture
+    app (Main Module)
     |__ KotlinArchitecture.kt (Application class)
     |__ api
-    |____ APIManager.kt
+    |____ APIManager.kt (Manages OKHTTP and Retrofit instance)
     |__ base
     |____ BaseActivity.kt
+    |____ DataBindingBaseActivity.kt (BaseActivity with DataBinding and Viewmodel)
     |____ BaseFragment.kt
+    |____ DataBindingBaseFragment.kt (BaseFragment with DataBinding and Viewmodel)
     |____ BaseViewModel.kt
     |____ ProgressDialog.kt
+    |____ ItemClickListener.kt (Interface for manage click listener)
     |__ ui
     |____ splash
-    |______ SplashActivity.kt (Splash screen with Kotlin coroutines)
+    |______ SplashActivity.kt
+    |____ home
+    |______ HomeActivity.kt
     |__ utils
     |____ preferences
     |______ ApplicationPreferences.kt
-    |______ PreferenceConstant.kt
-    |______ SharedPreferences.kt
-    |____ EncryptionUtils.kt
-    |____ LogUtil.kt
+    |______ PreferenceConstant.kt (Preference Constatnt contains all preference key)
+    |______ SharedPreferences.kt (Manages all the put and get preference)
+    |____ CommonUtils.kt
+    |____ EncryptionUtils.kt (Encription Util for incrept data into MD5)
+    |____ LogUtil.kt ( Manage Logs)
+    |____ ViewUtil.kt
     
+    registration (Dynamic Feature Module)
+    |__ api
+    |____ request
+    |______ LoginRequestModel.kt
+    |____ response
+    |______ UserModel.kt
+    |____ RegistrationInterceptor.kt (Registration API Interface)
+    |__ ui
+    |____ forgot_password
+    |______ ForgotPasswordFragment.kt
+    |______ ForgotPasswordRepository.kt
+    |______ ForgotPasswordViewModel.kt
+    |____ login
+    |______ LoginFragment.kt
+    |______ LoginRepository.kt
+    |______ LoginViewModel.kt
+    |____ signup
+    |______ SignupFragment.kt
+    |______ SignupRepository.kt
+    |______ SignupViewModel.kt
+    |__ RegistrationActivity.kt
     
   ## Network Library (Retrofit + Moshi for parsing) 
     com.network
