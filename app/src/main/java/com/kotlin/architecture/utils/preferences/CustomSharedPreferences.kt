@@ -1,7 +1,5 @@
 package com.kotlin.architecture.utils.preferences
 
-import java.util.*
-
 fun String.getBoolean(defaultValue: Boolean = false): Boolean? {
     return ApplicationPreferences.sharedPreferences?.getBoolean(this,defaultValue)
 }

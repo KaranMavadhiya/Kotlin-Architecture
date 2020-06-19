@@ -4,26 +4,13 @@
     <string name="screen_registration">Sign Up</string>
     <string name="screen_forgot_password">Forgot Password</string>
 
-    <string name="str_welcome">Welcome!</string>
-
     <string name="str_full_name">Full Name</string>
     <string name="str_email_address">Email Address</string>
-    <string name="str_code">Country</string>
-    <string name="str_mobile_number">Mobile Number</string>
     <string name="str_password">Password</string>
-    <string name="str_confirm_password">Confirm Password</string>
-    <string name="str_current_password">Current Password</string>
-    <string name="str_new_password">New Password</string>
+    <string name="str_or">OR</string>
 
     <string name="str_forgot_password">Forgot Password?</string>
     <string name="str_don_t_have_an_account">Don\'t have an account? SIGN UP</string>
-
-    <string name="str_submit">SUBMIT</string>
-    <string name="str_sign_in">SIGN IN</string>
-    <string name="str_sign_up">SIGN UP</string>
-    <string name="str_delete_account">Delete Account</string>
-    <string name="str_change_password">Change Password</string>
-    <string name="str_sign_out">Sign out</string>
 
     <string name="str_terms_of_service_and_privacy_policy"><![CDATA[By signing up you accept the Terms of Service and Privacy Policy]]></string>
     <string name="str_terms_and_service"><![CDATA[Terms of Service]]></string>
@@ -31,17 +18,19 @@
 
     <string name="str_password_hint">Password must be 8–20 characters, alphanumeric and contains one special character</string>
 
+    <string name="str_submit">SUBMIT</string>
+    <string name="str_sign_in">SIGN IN</string>
+    <string name="str_sign_up">SIGN UP</string>
+    <string name="str_sign_out">SIGN OUT</string>
+
+
     <string name="err_please_enter_full_name">Please enter full name.</string>
     <string name="err_please_enter_email_address">Please enter email address.</string>
     <string name="err_please_enter_valid_email_address">Please enter valid email address.</string>
-    <string name="err_please_enter_mobile_number">Please enter mobile number.</string>
-    <string name="err_please_enter_valid_mobile_number">Please enter valid mobile number.</string>
     <string name="err_please_enter_password">Please enter password.</string>
     <string name="err_please_enter_valid_password">Please enter valid password.</string>
-    <string name="err_please_enter_confirm_password">Please enter confirm password.</string>
-    <string name="err_password_and_confirm_password_not_match" translatable="false">Confirm password not match.</string>
-    <string name="str_or">OR</string>
-    <string name="str_please_verify_email_address">Please verify your email address.</string>
-    <string name="str_error_message">Sorry! Something is wrong, Please try again.</string>
+    <string name="err_server_message">Sorry! Something is wrong, Please try again.</string>
+
+    <string name="err_please_check_your_internet_connection">Please check your internet connection and try again</string>
 
 </resources>

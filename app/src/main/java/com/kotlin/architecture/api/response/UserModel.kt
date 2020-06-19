@@ -1,7 +1,9 @@
-package com.kotlin.architecture.registration.api.response
+package com.kotlin.architecture.api.response
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class UserModel(
 
     @Json(name = "_id")

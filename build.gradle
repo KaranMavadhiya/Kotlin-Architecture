@@ -6,7 +6,7 @@ buildscript {
         compileSdkVersion = 29
         buildToolsVersion = "29.0.3"
 
-        minSdkVersion = 22
+        minSdkVersion = 23
         targetSdkVersion = 29
 
         // version code and name

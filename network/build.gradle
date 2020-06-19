@@ -36,9 +36,9 @@ android {
     }
 }
 
-ext.retrofit_moshi_converter_version = '2.9.0'
+ext.retrofit_okhttp_version = '2.9.0'
 ext.okhttp_logging_interceptor = '4.7.2'
-ext.moshi_converter = '1.8.0'
+ext.moshi_converter = '1.9.3'
 
 ext.annotation_version = '1.1.0'
 
@@ -46,12 +46,14 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    // Retrofit dependency
-    api "com.squareup.retrofit2:converter-moshi:$retrofit_moshi_converter_version"
+    // Retrofit & OkHttp with Moshi Converter
+    api "com.squareup.retrofit2:converter-moshi:$retrofit_okhttp_version"
     api "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor"
 
-    api "com.squareup.moshi:moshi-adapters:$moshi_converter"
+    // Moshi with Adapter and Kotlin Codegen
     api "com.squareup.moshi:moshi-kotlin:$moshi_converter"
+    api "com.squareup.moshi:moshi-adapters:$moshi_converter"
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi_converter")
 
     // Annotation
     api "androidx.annotation:annotation:$annotation_version"

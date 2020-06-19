@@ -1,9 +1,14 @@
 package com.kotlin.architecture.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Patterns
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.kotlin.architecture.R
 import com.kotlin.architecture.utils.preferences.PreferenceConstant
@@ -30,6 +35,16 @@ object CommonUtils{
                 PreferenceConstant.UNIQUE_ID.putString(uniqueID)
             }
             return uniqueID
+        }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun Context.isNetworkAvailable() =
+        (this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+            getNetworkCapabilities(activeNetwork)?.run {
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            } ?: false
         }
 
     /**

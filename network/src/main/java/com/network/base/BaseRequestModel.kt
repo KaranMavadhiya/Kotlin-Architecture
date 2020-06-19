@@ -1,7 +1,9 @@
 package com.network.base
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class BaseRequestModel<T>(
     @Json(name = "deviceType")
     var deviceType: String,

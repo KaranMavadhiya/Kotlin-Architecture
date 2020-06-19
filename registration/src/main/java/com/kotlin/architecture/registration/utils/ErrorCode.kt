@@ -1,7 +1,7 @@
 package com.kotlin.architecture.registration.utils
 
 object ErrorCode {
-
+    const val STATUS_CODE_INTERNET_VALIDATION = 100
     const val STATUS_CODE_EMAIL_VALIDATION = 101
     const val STATUS_CODE_PASSWORD_VALIDATION = 102
 

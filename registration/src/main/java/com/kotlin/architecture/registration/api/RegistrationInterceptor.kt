@@ -1,7 +1,7 @@
 package com.kotlin.architecture.registration.api
 
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
-import com.kotlin.architecture.registration.api.response.UserModel
+import com.kotlin.architecture.api.response.UserModel
 import com.network.base.BaseResponseModel
 import retrofit2.Call
 import retrofit2.http.Body

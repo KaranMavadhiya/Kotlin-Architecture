@@ -8,4 +8,8 @@ object Constants {
     const val PLATFORM = "Android"
 
 
+    /**
+     * Activities
+     */
+    const val REGISTRATION_ACTIVITY = "com.kotlin.architecture.registration.RegistrationActivity"
 }

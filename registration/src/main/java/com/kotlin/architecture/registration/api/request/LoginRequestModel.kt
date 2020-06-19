@@ -3,7 +3,9 @@ package com.kotlin.architecture.registration.api.request
 import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.Constants
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class LoginRequestModel(
     @Json(name = "emailId")
     var email: String,
