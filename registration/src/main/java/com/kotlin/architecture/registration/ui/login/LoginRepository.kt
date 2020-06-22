@@ -1,22 +1,22 @@
 package com.kotlin.architecture.registration.ui.login
 
+import androidx.lifecycle.MutableLiveData
 import com.kotlin.architecture.api.APIManager
-import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.api.RegistrationInterceptor
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
 import com.kotlin.architecture.api.response.UserModel
-import com.kotlin.architecture.base.BaseViewModel.Companion.stateMutableLiveData
+import com.kotlin.architecture.base.BaseViewModel
+
 import com.kotlin.architecture.utils.ErrorCode
 import com.network.base.BaseResponseModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginRepository private constructor() {
+class LoginRepository private constructor(private val stateMutableLiveData: MutableLiveData<BaseViewModel.ViewState>) {
 
     fun callLoginApi(loginRequestModel: LoginRequestModel){
-
         APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callLoginApi(loginRequestModel).enqueue(object : Callback<BaseResponseModel<UserModel>> {
 
             override fun onFailure(call: Call<BaseResponseModel<UserModel>>, t: Throwable) {
@@ -39,8 +39,8 @@ class LoginRepository private constructor() {
     companion object {
         @Volatile
         private var instance: LoginRepository? = null
-        fun getInstance() = instance ?: synchronized(this) {
-                instance  ?: LoginRepository().also { instance = it }
+        fun getInstance(stateMutableLiveData: MutableLiveData<BaseViewModel.ViewState>) = instance ?: synchronized(this) {
+                instance  ?: LoginRepository(stateMutableLiveData).also { instance = it }
         }
     }
 }

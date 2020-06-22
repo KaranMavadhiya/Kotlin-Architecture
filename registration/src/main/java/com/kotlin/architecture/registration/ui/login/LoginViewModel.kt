@@ -3,6 +3,7 @@ package com.kotlin.architecture.registration.ui.login
 import android.app.Application
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
@@ -14,6 +15,9 @@ import com.kotlin.architecture.utils.CommonUtils.isNetworkAvailable
 class LoginViewModel(application: Application) : BaseViewModel(application), Observable {
 
     private val context = getApplication<Application>().applicationContext
+
+    private val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
+    val stateLiveData: LiveData<ViewState> = stateMutableLiveData
 
     @Bindable
     val inputEmail = MutableLiveData<String>()
@@ -38,7 +42,7 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
             else -> {
                 stateMutableLiveData.value = ViewState.InProgress
                 val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString())
-                LoginRepository.getInstance().callLoginApi(loginRequestModel)
+                LoginRepository.getInstance(stateMutableLiveData).callLoginApi(loginRequestModel)
             }
         }
     }
