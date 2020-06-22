@@ -5,27 +5,30 @@ import android.util.Log
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kotlin.architecture.R
-import com.kotlin.architecture.base.BaseActivity
 import com.kotlin.architecture.api.response.UserModel
+import com.kotlin.architecture.base.BaseViewModel
+import com.kotlin.architecture.base.DataBindingBaseActivity
+import com.kotlin.architecture.databinding.ActivityHomeBinding
 import com.kotlin.architecture.utils.Constants
 import com.kotlin.architecture.utils.preferences.PreferenceConstant
 import com.kotlin.architecture.utils.preferences.getBoolean
 import com.kotlin.architecture.utils.preferences.getString
-import com.squareup.moshi.JsonAdapter
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : DataBindingBaseActivity<ActivityHomeBinding, BaseViewModel>(BaseViewModel::class.java){
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_home
     }
 
     override fun initializeComponents() {
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(binding.toolbar)
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        binding.fab
+
+        binding.fab.setOnClickListener {
             startActivity(Constants.REGISTRATION_ACTIVITY, REGISTRATION_RESULT_CODE)
         }
 

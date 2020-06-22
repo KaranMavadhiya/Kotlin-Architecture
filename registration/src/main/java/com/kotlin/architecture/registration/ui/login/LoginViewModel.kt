@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
-import com.kotlin.architecture.registration.utils.ErrorCode
+import com.kotlin.architecture.utils.ErrorCode
 import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.CommonUtils.isNetworkAvailable
 
@@ -32,12 +32,12 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
             inputPassword.value.isNullOrEmpty() -> {
                 stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_PASSWORD_VALIDATION,R.string.err_please_enter_password)
             }
-            !context.isNetworkAvailable() ->{
+            !context.isNetworkAvailable() -> {
                 stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_INTERNET_VALIDATION,R.string.err_please_check_your_internet_connection)
             }
             else -> {
-                val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString())
                 stateMutableLiveData.value = ViewState.InProgress
+                val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString())
                 LoginRepository.getInstance().callLoginApi(loginRequestModel)
             }
         }

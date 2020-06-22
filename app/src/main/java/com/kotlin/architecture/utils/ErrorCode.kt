@@ -1,4 +1,4 @@
-package com.kotlin.architecture.registration.utils
+package com.kotlin.architecture.utils
 
 object ErrorCode {
     const val STATUS_CODE_INTERNET_VALIDATION = 100

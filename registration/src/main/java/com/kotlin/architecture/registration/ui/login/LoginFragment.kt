@@ -6,27 +6,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.kotlin.architecture.api.response.UserModel
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.base.DataBindingBaseFragment
 import com.kotlin.architecture.base.ItemClickListener
 import com.kotlin.architecture.registration.R
-import com.kotlin.architecture.api.response.UserModel
 import com.kotlin.architecture.registration.databinding.FragmentLoginBinding
-import com.kotlin.architecture.registration.utils.ErrorCode
+import com.kotlin.architecture.utils.ErrorCode
 import com.kotlin.architecture.utils.CommonUtils
-import com.kotlin.architecture.utils.LogUtil
 import com.kotlin.architecture.utils.ViewUtil
 import com.kotlin.architecture.utils.preferences.PreferenceConstant
 import com.kotlin.architecture.utils.preferences.putBoolean
 import com.kotlin.architecture.utils.preferences.putString
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 
-class LoginFragment :
-    DataBindingBaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class.java),
-    ItemClickListener {
+class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class.java), ItemClickListener {
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_login
@@ -61,11 +57,7 @@ class LoginFragment :
         animateUI()
 
         //set spannable text
-        CommonUtils.applySpanPrimaryColor(
-            binding.textSignUp,
-            getString(R.string.str_don_t_have_an_account),
-            getString(R.string.str_sign_up)
-        )
+        CommonUtils.applySpanPrimaryColor(binding.textSignUp, getString(R.string.str_don_t_have_an_account), getString(R.string.str_sign_up))
     }
 
     private fun animateUI() {
@@ -163,7 +155,7 @@ class LoginFragment :
     }
 
     private inline fun <reified T> convertModelToJson(data: T): String {
-        val adapter =  Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(T::class.java)
+        val adapter = Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(T::class.java)
         return adapter.toJson(data)
     }
 }
