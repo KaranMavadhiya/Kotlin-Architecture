@@ -112,16 +112,17 @@ dependencies {
     api 'com.intuit.sdp:sdp-android:1.0.6'
 }
 
-Properties properties = new Properties()
-def propertiesFile = new File('keystore.properties')
-if (propertiesFile.canRead()) {
-    properties.load(new FileInputStream(propertiesFile))
+def keystorePropertiesFile = new File('keystore.properties')
+def keystoreProperties = new Properties()
 
-    if (properties != null && properties.containsKey('STORE_FILE') && properties.containsKey('KEY_ALIAS') && properties.containsKey('PASSWORD')) {
-        android.signingConfigs.release.storeFile = file(properties['STORE_FILE'])
-        android.signingConfigs.release.storePassword = properties['PASSWORD']
-        android.signingConfigs.release.keyAlias = properties['KEY_ALIAS']
-        android.signingConfigs.release.keyPassword = properties['PASSWORD']
+if (keystorePropertiesFile.canRead()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    if (keystoreProperties != null && keystoreProperties.containsKey('STORE_FILE') && keystoreProperties.containsKey('KEY_ALIAS') && keystoreProperties.containsKey('PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(keystoreProperties['STORE_FILE'])
+        android.signingConfigs.release.storePassword = keystoreProperties['PASSWORD']
+        android.signingConfigs.release.keyAlias = keystoreProperties['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = keystoreProperties['PASSWORD']
     } else {
         println 'signing.properties found but some entries are missing'
         android.buildTypes.release.signingConfig = null

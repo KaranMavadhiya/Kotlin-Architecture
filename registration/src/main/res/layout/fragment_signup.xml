@@ -47,12 +47,13 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editFirstName"
+                android:id="@+id/editFullName"
                 style="@style/textInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/str_full_name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="@={signupViewModel.signupInfo.inputFullName}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/str_email_address"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="@={signupViewModel.signupInfo.inputEmail}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,11 +96,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/str_password"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword" />
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:text="@={signupViewModel.signupInfo.inputPassword}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textPasswordHint"
@@ -110,7 +112,6 @@
             app:layout_constraintEnd_toEndOf="@+id/inputPassword"
             app:layout_constraintStart_toStartOf="@+id/inputPassword"
             app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
-
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textTermsOfService"
@@ -134,7 +135,7 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:onClick="@{(view)-> itemClickListener.onItemClickListener(view)}"
+            android:onClick="@{(view)-> signupViewModel.signup()}"
             android:text="@string/str_sign_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/inputPassword"

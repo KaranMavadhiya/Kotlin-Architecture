@@ -12,7 +12,7 @@ import com.kotlin.architecture.base.DataBindingBaseFragment
 import com.kotlin.architecture.base.ItemClickListener
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.databinding.FragmentLoginBinding
-import com.kotlin.architecture.utils.ErrorCode
+import com.kotlin.architecture.utils.StatusCode
 import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.ViewUtil
 import com.kotlin.architecture.utils.preferences.PreferenceConstant
@@ -37,7 +37,7 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
             // set item click listener with data binding
             itemClickListener = this@LoginFragment
 
-            // set LoginViewModel
+            // set ViewModel to layout
             loginViewModel = viewModel
 
             editEmail.afterTextChanged {
@@ -90,7 +90,7 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
 
     private fun setObserver() {
         // set BaseViewModel.ViewState observer
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer(this::manageState))
+        viewModel.stateLiveData.observe(this, Observer(this::manageState))
     }
 
     private fun manageState(viewState: BaseViewModel.ViewState) {
@@ -108,13 +108,13 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
                 dismissProgressDialog()
 
                 when (viewState.status) {
-                    ErrorCode.STATUS_CODE_EMAIL_VALIDATION -> {
+                    StatusCode.STATUS_CODE_EMAIL_VALIDATION -> {
                         binding.inputEmail.error = getString(viewState.message)
                     }
-                    ErrorCode.STATUS_CODE_PASSWORD_VALIDATION -> {
+                    StatusCode.STATUS_CODE_PASSWORD_VALIDATION -> {
                         binding.inputPassword.error = getString(viewState.message)
                     }
-                    ErrorCode.STATUS_CODE_INTERNET_VALIDATION -> {
+                    StatusCode.STATUS_CODE_INTERNET_VALIDATION -> {
                         Toast.makeText(context, getString(viewState.message), Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -124,7 +124,7 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
                 dismissProgressDialog()
 
                 when (viewState.status) {
-                    ErrorCode.STATUS_CODE_SERVER_ERROR -> {
+                    StatusCode.STATUS_CODE_SERVER_ERROR -> {
                         Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
                     }
                     else -> {

@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
-import com.kotlin.architecture.utils.ErrorCode
+import com.kotlin.architecture.utils.StatusCode
 import com.kotlin.architecture.utils.CommonUtils
 import com.kotlin.architecture.utils.CommonUtils.isNetworkAvailable
 
@@ -28,16 +28,16 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
     fun signIn() {
         when {
             inputEmail.value.isNullOrEmpty() -> {
-                stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_email_address)
+                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_email_address)
             }
             !inputEmail.value?.let { CommonUtils.isValidEmailAddress(it) }!! -> {
-                stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_valid_email_address)
+                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_valid_email_address)
             }
             inputPassword.value.isNullOrEmpty() -> {
-                stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_PASSWORD_VALIDATION,R.string.err_please_enter_password)
+                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_PASSWORD_VALIDATION,R.string.err_please_enter_password)
             }
             !context.isNetworkAvailable() -> {
-                stateMutableLiveData.value = ViewState.Validate(ErrorCode.STATUS_CODE_INTERNET_VALIDATION,R.string.err_please_check_your_internet_connection)
+                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_INTERNET_VALIDATION,R.string.err_please_check_your_internet_connection)
             }
             else -> {
                 stateMutableLiveData.value = ViewState.InProgress

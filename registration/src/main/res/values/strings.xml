@@ -29,8 +29,8 @@
     <string name="err_please_enter_valid_email_address">Please enter valid email address.</string>
     <string name="err_please_enter_password">Please enter password.</string>
     <string name="err_please_enter_valid_password">Please enter valid password.</string>
-    <string name="err_server_message">Sorry! Something is wrong, Please try again.</string>
 
     <string name="err_please_check_your_internet_connection">Please check your internet connection and try again</string>
+    <string name="str_ok">OK</string>
 
 </resources>

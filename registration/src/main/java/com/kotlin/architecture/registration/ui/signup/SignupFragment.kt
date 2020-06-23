@@ -1,21 +1,24 @@
 package com.kotlin.architecture.registration.ui.signup
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.google.android.material.textview.MaterialTextView
+import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.base.DataBindingBaseFragment
 import com.kotlin.architecture.base.ItemClickListener
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.databinding.FragmentSignupBinding
+import com.kotlin.architecture.utils.StatusCode
 import com.kotlin.architecture.utils.ViewUtil
+import com.network.base.BaseResponseModel
 
 class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupViewModel>(SignupViewModel::class.java), ItemClickListener {
 
@@ -26,11 +29,28 @@ class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupView
     override fun initializeController() {
         setupUI()
 
-        // set item click listener with data binding
-        binding.itemClickListener = this@SignupFragment
+        with(binding) {
 
-        // set LoginViewModel
-        binding.signupViewModel = viewModel
+            // set item click listener with data binding
+            itemClickListener = this@SignupFragment
+
+            // set ViewModel to layout
+            signupViewModel = viewModel
+
+            editFullName.afterTextChanged {
+                inputFullName.isErrorEnabled = false
+            }
+
+            editEmail.afterTextChanged {
+                inputEmail.isErrorEnabled = false
+            }
+
+            editPassword.afterTextChanged {
+                inputPassword.isErrorEnabled = false
+            }
+        }
+
+        setObserver()
     }
 
     private fun setupUI() {
@@ -89,6 +109,76 @@ class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupView
         spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#F68510")), startIndexPP, endIndexPP, 0)
 
         termsCondition.text = spannableString
+    }
+
+    private fun setObserver() {
+        // set BaseViewModel.ViewState observer
+        viewModel.stateLiveData.observe(this, Observer(this::manageState))
+    }
+
+    private fun manageState(viewState: BaseViewModel.ViewState) {
+        when (viewState) {
+            BaseViewModel.ViewState.Idle -> {
+                with(binding) {
+                    inputEmail.error = null
+                    inputPassword.error = null
+                }
+            }
+            BaseViewModel.ViewState.InProgress -> {
+                showProgressDialog(requireActivity().supportFragmentManager)
+            }
+            is BaseViewModel.ViewState.Validate -> {
+                dismissProgressDialog()
+
+                when (viewState.status) {
+                    StatusCode.STATUS_CODE_NAME_VALIDATION -> {
+                        binding.inputFullName.error = getString(viewState.message)
+                    }
+                    StatusCode.STATUS_CODE_EMAIL_VALIDATION -> {
+                        binding.inputEmail.error = getString(viewState.message)
+                    }
+                    StatusCode.STATUS_CODE_PASSWORD_VALIDATION -> {
+                        binding.inputPassword.error = getString(viewState.message)
+                    }
+                    StatusCode.STATUS_CODE_INTERNET_VALIDATION -> {
+                        Toast.makeText(context, getString(viewState.message), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            is BaseViewModel.ViewState.Failed -> {
+                dismissProgressDialog()
+
+                when (viewState.status) {
+                    StatusCode.STATUS_CODE_SERVER_ERROR -> {
+                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            is BaseViewModel.ViewState.Succeed<*> -> {
+                dismissProgressDialog()
+
+                if (viewState.data != null && viewState.data is BaseResponseModel<*>) {
+
+                    // Reference : https://www.journaldev.com/309/android-alert-dialog-using-kotlin
+
+                    val builder = AlertDialog.Builder(requireContext())
+                    with(builder) {
+                        setTitle(com.kotlin.architecture.R.string.app_name)
+                        setMessage((viewState.data as BaseResponseModel<*>).message)
+                        setPositiveButton(getString(R.string.str_ok), DialogInterface.OnClickListener(function = signupSuccessButtonClick))
+                        return@with show()
+                    }
+
+                }
+            }
+        }
+    }
+
+    private val signupSuccessButtonClick = { _: DialogInterface, _: Int ->
+        requireActivity().onBackPressed()
     }
 
     override fun onItemClickListener(view: View) {
