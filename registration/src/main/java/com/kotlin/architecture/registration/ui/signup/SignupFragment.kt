@@ -1,6 +1,8 @@
 package com.kotlin.architecture.registration.ui.signup
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
@@ -18,6 +20,9 @@ import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.databinding.FragmentSignupBinding
 import com.kotlin.architecture.utils.StatusCode
 import com.kotlin.architecture.utils.ViewUtil
+import com.kotlin.architecture.utils.preferences.PreferenceConstant
+import com.kotlin.architecture.utils.preferences.putBoolean
+import com.kotlin.architecture.utils.preferences.putString
 import com.network.base.BaseResponseModel
 
 class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupViewModel>(SignupViewModel::class.java), ItemClickListener {
@@ -113,68 +118,51 @@ class SignupFragment : DataBindingBaseFragment<FragmentSignupBinding, SignupView
 
     private fun setObserver() {
         // set BaseViewModel.ViewState observer
-        viewModel.stateLiveData.observe(this, Observer(this::manageState))
-    }
+        viewModel.signupModel.observe(this, Observer { result ->
 
-    private fun manageState(viewState: BaseViewModel.ViewState) {
-        when (viewState) {
-            BaseViewModel.ViewState.Idle -> {
-                with(binding) {
-                    inputEmail.error = null
-                    inputPassword.error = null
-                }
-            }
-            BaseViewModel.ViewState.InProgress -> {
+            if (result is BaseViewModel.ResultOf.InProgress) {
                 showProgressDialog(requireActivity().supportFragmentManager)
             }
-            is BaseViewModel.ViewState.Validate -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
-                    StatusCode.STATUS_CODE_NAME_VALIDATION -> {
-                        binding.inputFullName.error = getString(viewState.message)
-                    }
+            result.validate { status, message ->
+                when (status) {
                     StatusCode.STATUS_CODE_EMAIL_VALIDATION -> {
-                        binding.inputEmail.error = getString(viewState.message)
+                        binding.inputEmail.error = message
                     }
                     StatusCode.STATUS_CODE_PASSWORD_VALIDATION -> {
-                        binding.inputPassword.error = getString(viewState.message)
+                        binding.inputPassword.error = message
                     }
                     StatusCode.STATUS_CODE_INTERNET_VALIDATION -> {
-                        Toast.makeText(context, getString(viewState.message), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Failed -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
+            result.success {
+                dismissProgressDialog()
+                // Reference : https://www.journaldev.com/309/android-alert-dialog-using-kotlin
+
+                val builder = AlertDialog.Builder(requireContext())
+                with(builder) {
+                    setTitle(com.kotlin.architecture.R.string.app_name)
+                    setMessage(it.message)
+                    setPositiveButton(getString(R.string.str_ok), DialogInterface.OnClickListener(function = signupSuccessButtonClick))
+                    return@with show()
+                }
+            }
+
+            result.failure { status, message, _ ->
+                dismissProgressDialog()
+                when (status) {
                     StatusCode.STATUS_CODE_SERVER_ERROR -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Succeed<*> -> {
-                dismissProgressDialog()
-
-                if (viewState.data != null && viewState.data is BaseResponseModel<*>) {
-
-                    // Reference : https://www.journaldev.com/309/android-alert-dialog-using-kotlin
-
-                    val builder = AlertDialog.Builder(requireContext())
-                    with(builder) {
-                        setTitle(com.kotlin.architecture.R.string.app_name)
-                        setMessage((viewState.data as BaseResponseModel<*>).message)
-                        setPositiveButton(getString(R.string.str_ok), DialogInterface.OnClickListener(function = signupSuccessButtonClick))
-                        return@with show()
-                    }
-
-                }
-            }
-        }
+        })
     }
 
     private val signupSuccessButtonClick = { _: DialogInterface, _: Int ->

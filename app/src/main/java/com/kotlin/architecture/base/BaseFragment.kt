@@ -10,6 +10,8 @@ import android.widget.EditText
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 abstract class BaseFragment : Fragment() {
 
@@ -59,5 +61,28 @@ abstract class BaseFragment : Fragment() {
                 afterTextChanged.invoke(editable.toString())
             }
         })
+    }
+
+    inline fun <reified T> BaseViewModel.ResultOf<T>.validate(callback: (status: Int, message: String?) -> Unit) {
+        if (this is BaseViewModel.ResultOf.Failure) {
+            callback(status, message)
+        }
+    }
+
+    inline fun <reified T> BaseViewModel.ResultOf<T>.success(callback: (value: T) -> Unit) {
+        if (this is BaseViewModel.ResultOf.Success) {
+            callback(value)
+        }
+    }
+
+    inline fun <reified T> BaseViewModel.ResultOf<T>.failure(callback: (status: Int, message: String?, throwable: Throwable?) -> Unit) {
+        if (this is BaseViewModel.ResultOf.Failure) {
+            callback(status, message, throwable)
+        }
+    }
+
+    inline fun <reified T> convertModelToJson(data: T): String {
+        val adapter = Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(T::class.java)
+        return adapter.toJson(data)
     }
 }

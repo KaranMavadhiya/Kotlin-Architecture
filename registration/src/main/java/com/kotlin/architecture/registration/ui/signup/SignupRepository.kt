@@ -13,35 +13,34 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SignupRepository private constructor(private val stateMutableLiveData: MutableLiveData<BaseViewModel.ViewState>) {
+class SignupRepository private constructor(private val stateMutableLiveData: MutableLiveData<BaseViewModel.ResultOf<BaseResponseModel<DataModel>>>) {
 
     fun callSignupApi(signupRequestModel: SignupRequestModel) {
 
-        APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callSignupApi(signupRequestModel)
-            .enqueue(object : Callback<BaseResponseModel<DataModel>> {
+        APIManager.getRetrofitInstance(RegistrationInterceptor::class.java).callSignupApi(signupRequestModel).enqueue(object : Callback<BaseResponseModel<DataModel>> {
 
-                override fun onFailure(call: Call<BaseResponseModel<DataModel>>, t: Throwable) {
-                    stateMutableLiveData.value = BaseViewModel.ViewState.Failed(StatusCode.STATUS_CODE_SERVER_ERROR, StatusCode.SERVER_ERROR_MESSAGE)
-                }
+            override fun onFailure(call: Call<BaseResponseModel<DataModel>>, t: Throwable) {
+                stateMutableLiveData.postValue(BaseViewModel.ResultOf.Failure(StatusCode.STATUS_CODE_SERVER_ERROR, StatusCode.SERVER_ERROR_MESSAGE, t))
+            }
 
-                override fun onResponse(call: Call<BaseResponseModel<DataModel>>, response: Response<BaseResponseModel<DataModel>>) {
-                    if (response.body() == null) {
-                        stateMutableLiveData.value =
-                            BaseViewModel.ViewState.Failed(StatusCode.STATUS_CODE_SERVER_ERROR, StatusCode.SERVER_ERROR_MESSAGE)
-                    } else if (response.body()!!.status == StatusCode.SUCCESS && response.body()!!.statusCode == StatusCode.STATUS_CODE_SUCCESS) {
-                        val responseModel = response.body()
-                        stateMutableLiveData.value = BaseViewModel.ViewState.Succeed(responseModel)
-                    } else {
-                        stateMutableLiveData.value = BaseViewModel.ViewState.Failed(response.body()!!.statusCode, response.body()!!.message)
-                    }
+            override fun onResponse(call: Call<BaseResponseModel<DataModel>>, response: Response<BaseResponseModel<DataModel>>){
+                if (response.body() == null) {
+                    stateMutableLiveData.postValue(BaseViewModel.ResultOf.Failure(StatusCode.STATUS_CODE_SERVER_ERROR, StatusCode.SERVER_ERROR_MESSAGE, throwable = null))
+                } else if ( response.body()!!.status == StatusCode.SUCCESS &&  response.body()!! .statusCode == StatusCode.STATUS_CODE_SUCCESS) {
+                    val responseModel =   response.body()!!
+                    stateMutableLiveData.postValue(BaseViewModel.ResultOf.Success(responseModel))
+                }else{
+                    val message = response.body()!!.message
+                    stateMutableLiveData.postValue(BaseViewModel.ResultOf.Failure(response.body()!!.statusCode, message, throwable = null))
                 }
-            })
+            }
+        })
     }
 
     companion object {
         @Volatile
         private var instance: SignupRepository? = null
-        fun getInstance(stateMutableLiveData: MutableLiveData<BaseViewModel.ViewState>) = instance ?: synchronized(this) {
+        fun getInstance(stateMutableLiveData: MutableLiveData<BaseViewModel.ResultOf<BaseResponseModel<DataModel>>>) = instance ?: synchronized(this) {
             instance ?: SignupRepository(stateMutableLiveData).also { instance = it }
         }
     }

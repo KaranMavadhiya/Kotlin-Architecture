@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kotlin.architecture.api.response.UserModel
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.api.request.LoginRequestModel
@@ -16,8 +17,8 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
 
     private val context = getApplication<Application>().applicationContext
 
-    private val stateMutableLiveData = MutableLiveData<ViewState>(ViewState.Idle)
-    val stateLiveData: LiveData<ViewState> = stateMutableLiveData
+    private val _userModel = MutableLiveData<ResultOf<UserModel>>()
+    val userModel: LiveData<ResultOf<UserModel>> = _userModel
 
     @Bindable
     val inputEmail = MutableLiveData<String>()
@@ -28,21 +29,21 @@ class LoginViewModel(application: Application) : BaseViewModel(application), Obs
     fun signIn() {
         when {
             inputEmail.value.isNullOrEmpty() -> {
-                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_email_address)
+                _userModel.postValue(ResultOf.Validation(StatusCode.STATUS_CODE_EMAIL_VALIDATION, context.getString(R.string.err_please_enter_email_address)))
             }
             !inputEmail.value?.let { CommonUtils.isValidEmailAddress(it) }!! -> {
-                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_EMAIL_VALIDATION,R.string.err_please_enter_valid_email_address)
+                _userModel.postValue(ResultOf.Validation(StatusCode.STATUS_CODE_EMAIL_VALIDATION, context.getString(R.string.err_please_enter_valid_email_address)))
             }
             inputPassword.value.isNullOrEmpty() -> {
-                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_PASSWORD_VALIDATION,R.string.err_please_enter_password)
+                _userModel.postValue(ResultOf.Validation(StatusCode.STATUS_CODE_PASSWORD_VALIDATION, context.getString(R.string.err_please_enter_password)))
             }
             !context.isNetworkAvailable() -> {
-                stateMutableLiveData.value = ViewState.Validate(StatusCode.STATUS_CODE_INTERNET_VALIDATION,R.string.err_please_check_your_internet_connection)
+                _userModel.postValue(ResultOf.Validation(StatusCode.STATUS_CODE_INTERNET_VALIDATION, context.getString(R.string.err_please_check_your_internet_connection)))
             }
             else -> {
-                stateMutableLiveData.value = ViewState.InProgress
+                _userModel.postValue(ResultOf.InProgress)
                 val loginRequestModel = LoginRequestModel(inputEmail.value.toString(),inputPassword.value.toString())
-                LoginRepository.getInstance(stateMutableLiveData).callLoginApi(loginRequestModel)
+                LoginRepository.getInstance(_userModel).callLoginApi(loginRequestModel)
             }
         }
     }

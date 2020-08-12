@@ -1,7 +1,6 @@
 package com.kotlin.architecture.base
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.Editable
@@ -72,64 +71,6 @@ abstract class DataBindingBaseActivity< DB : ViewDataBinding, VM : BaseViewModel
         }
         lastClickedTime = SystemClock.elapsedRealtime()
 
-    }
-
-    /**
-     * @param className Name of the next Activity (NextActivity::class.java)
-     */
-    open fun startActivity(className: Class<*>?) {
-        startActivity(Intent(applicationContext, className))
-    }
-
-    /**
-     * @param classPath Path of the next Activity (xxx.xxx.NextActivity)
-     */
-    open fun startActivity(classPath: String) {
-        startActivity(Intent(Intent.ACTION_VIEW).setClassName(applicationContext, classPath))
-    }
-
-    /**
-     * @param className  Name of the next Activity (NextActivity::class.java)
-     * @param resultCode Activity result code
-     */
-    open fun startActivity(className: Class<*>?, resultCode: Int) {
-        startActivityForResult(Intent(applicationContext, className), resultCode)
-    }
-
-    /**
-     * @param classPath  Path of the next Activity (xxx.xxx.NextActivity)
-     * @param resultCode Activity result code
-     */
-    open fun startActivity(classPath: String, resultCode: Int) {
-        startActivityForResult( Intent(Intent.ACTION_VIEW).setClassName( applicationContext, classPath ), resultCode)
-    }
-
-    /**
-     * @param className Name of the next Activity (NextActivity::class.java)
-     * @param bundle  Bundle which need to pass next Activity
-     */
-    open fun startActivity(className: Class<*>?, bundle: Bundle?) {
-        val intent = Intent(applicationContext, className)
-        intent.putExtras(bundle!!)
-        startActivity(intent)
-    }
-
-    /**
-     * @param classPath Path of the next Activity (xxx.xxx.NextActivity)
-     * @param bundle  Bundle which need to pass next Activity
-     */
-    open fun startActivity(classPath: String, bundle: Bundle?) {
-        val intent = Intent(Intent.ACTION_VIEW).setClassName(applicationContext, classPath)
-        intent.putExtras(bundle!!)
-        startActivity(intent)
-    }
-
-    /**
-     * @param intent     Activity Intent
-     * @param resultCode Activity result code
-     */
-    open fun startActivityForResultBack(intent: Intent?, resultCode: Int) {
-        setResult(resultCode, intent)
     }
 
     private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {

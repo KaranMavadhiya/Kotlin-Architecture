@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_registration"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.kotlin.architecture.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_registrationActivity"
+            app:destination="@id/registrationActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/registrationActivity"
+        android:name="com.kotlin.architecture.registration.RegistrationActivity"
+        app:moduleName="registration"
+        android:label="activity_registration"
+        tools:layout="@layout/activity_registration" />
+
+</navigation>

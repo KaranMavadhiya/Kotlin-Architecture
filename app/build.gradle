@@ -51,15 +51,18 @@ android {
         }
     }
 
+    // Enable DataBinding
     dataBinding {
         enabled = true
     }
 
+    // Set both the Java and Kotlin compilers to target Java 8.
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    // Set Kotlin to jvmTarget 1.8
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -70,28 +73,25 @@ android {
 
 dependencies {
     api project(path: ':network')
+    api project(path: ':generic_adapter')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    // Kotlin core and ktx
-    api "androidx.core:core-ktx:$ktx_version"
+    // Kotlin
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // ViewModel
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-    // LiveData
-    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
     // Lifecycle only (without ViewModel or LiveData)
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-    // Saved state module for ViewModel
-    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
     // alternately - if using Java8, use the following instead of lifecycle-compiler
     api "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
+    // LiveData
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    
     // Navigation
     api "androidx.navigation:navigation-fragment-ktx:$nav_version"
     api "androidx.navigation:navigation-ui-ktx:$nav_version"

@@ -62,82 +62,40 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    /**
-     * @param className Name of the next Activity (NextActivity::class.java)
-     */
-    open fun startActivity(className: Class<*>?) {
-        startActivity(Intent(applicationContext, className))
-    }
-
-    /**
-     * @param classPath Path of the next Activity (xxx.xxx.NextActivity)
-     */
-    open fun startActivity(classPath: String) {
-        startActivity(Intent(Intent.ACTION_VIEW).setClassName(applicationContext, classPath))
-    }
-
-    /**
-     * @param className  Name of the next Activity (NextActivity::class.java)
-     * @param resultCode Activity result code
-     */
-    open fun startActivity(className: Class<*>?, resultCode: Int) {
-        startActivityForResult(Intent(applicationContext, className), resultCode)
-    }
-
-    /**
-     * @param classPath  Path of the next Activity (xxx.xxx.NextActivity)
-     * @param resultCode Activity result code
-     */
-    open fun startActivity(classPath: String, resultCode: Int) {
-        startActivityForResult( Intent(Intent.ACTION_VIEW).setClassName( applicationContext, classPath ), resultCode)
-    }
-
-    /**
-     * @param className Name of the next Activity (NextActivity::class.java)
-     * @param bundle  Bundle which need to pass next Activity
-     */
-    open fun startActivity(className: Class<*>?, bundle: Bundle?) {
-        val intent = Intent(applicationContext, className)
-        intent.putExtras(bundle!!)
-        startActivity(intent)
-    }
-
-    /**
-     * @param classPath Path of the next Activity (xxx.xxx.NextActivity)
-     * @param bundle  Bundle which need to pass next Activity
-     */
-    open fun startActivity(classPath: String, bundle: Bundle?) {
-        val intent = Intent(Intent.ACTION_VIEW).setClassName(applicationContext, classPath)
-        intent.putExtras(bundle!!)
-        startActivity(intent)
-    }
-
-    /**
-     * @param intent     Activity Intent
-     * @param resultCode Activity result code
-     */
-    open fun startActivityForResultBack(intent: Intent?, resultCode: Int) {
-        setResult(resultCode, intent)
-    }
-
     private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
         val fragmentTransaction = beginTransaction()
         fragmentTransaction.func()
         fragmentTransaction.commit()
     }
 
+    /**
+     * @param fragment : Fragment that need to add
+     * @param frameId  : container id
+     */
     fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int) {
         supportFragmentManager.inTransaction { add(frameId, fragment) }
     }
 
+    /**
+     * @param fragment : Fragment that need to replace
+     * @param frameId  : container id
+     */
     fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
         supportFragmentManager.inTransaction { replace(frameId, fragment) }
     }
 
+    /**
+     * @param supportFragmentManager : FragmentManager
+     *
+     * This method is used to show progress dialog
+     */
     fun showProgressDialog(supportFragmentManager: FragmentManager?) {
         progressDialog = ProgressDialog.showProgressDialog(supportFragmentManager)
     }
 
+    /**
+     * This method is used to hide progress dialog
+     */
     fun dismissProgressDialog() {
         progressDialog?.dismiss()
     }

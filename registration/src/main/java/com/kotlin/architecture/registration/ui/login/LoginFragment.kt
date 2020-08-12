@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.kotlin.architecture.api.response.UserModel
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.base.DataBindingBaseFragment
 import com.kotlin.architecture.base.ItemClickListener
@@ -18,9 +17,6 @@ import com.kotlin.architecture.utils.ViewUtil
 import com.kotlin.architecture.utils.preferences.PreferenceConstant
 import com.kotlin.architecture.utils.preferences.putBoolean
 import com.kotlin.architecture.utils.preferences.putString
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-
 
 class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewModel>(LoginViewModel::class.java), ItemClickListener {
 
@@ -90,72 +86,52 @@ class LoginFragment : DataBindingBaseFragment<FragmentLoginBinding, LoginViewMod
 
     private fun setObserver() {
         // set BaseViewModel.ViewState observer
-        viewModel.stateLiveData.observe(this, Observer(this::manageState))
-    }
+        viewModel.userModel.observe(this, Observer { result ->
 
-    private fun manageState(viewState: BaseViewModel.ViewState) {
-        when (viewState) {
-            BaseViewModel.ViewState.Idle -> {
-                with(binding) {
-                    inputEmail.error = null
-                    inputPassword.error = null
-                }
-            }
-            BaseViewModel.ViewState.InProgress -> {
+            if (result is BaseViewModel.ResultOf.InProgress) {
                 showProgressDialog(requireActivity().supportFragmentManager)
             }
-            is BaseViewModel.ViewState.Validate -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
+            result.validate { status, message ->
+                when (status) {
                     StatusCode.STATUS_CODE_EMAIL_VALIDATION -> {
-                        binding.inputEmail.error = getString(viewState.message)
+                        binding.inputEmail.error = message
                     }
                     StatusCode.STATUS_CODE_PASSWORD_VALIDATION -> {
-                        binding.inputPassword.error = getString(viewState.message)
+                        binding.inputPassword.error = message
                     }
                     StatusCode.STATUS_CODE_INTERNET_VALIDATION -> {
-                        Toast.makeText(context, getString(viewState.message), Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Failed -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
+            result.success {
+                dismissProgressDialog()
+                // Added USER_MODEL in preference
+                PreferenceConstant.USER_MODEL.putString(convertModelToJson(it))
+
+                // Added AUTH_TOKEN in preference
+                PreferenceConstant.AUTH_TOKEN.putString(it.accessToken)
+
+                // Added IS_USER_LOGIN true in preference
+                PreferenceConstant.IS_USER_LOGIN.putBoolean(true)
+
+                requireActivity().setResult(Activity.RESULT_OK, Intent())
+                requireActivity().finish()
+            }
+
+            result.failure { status, message, _ ->
+                dismissProgressDialog()
+                when (status) {
                     StatusCode.STATUS_CODE_SERVER_ERROR -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Succeed<*> -> {
-                dismissProgressDialog()
-
-                if (viewState.data != null && viewState.data is UserModel) {
-                    val userModel = viewState.data as UserModel
-
-                    // Added USER_MODEL in preference
-                    PreferenceConstant.USER_MODEL.putString(convertModelToJson(userModel))
-
-                    // Added AUTH_TOKEN in preference
-                    PreferenceConstant.AUTH_TOKEN.putString(userModel.accessToken)
-
-                    // Added IS_USER_LOGIN true in preference
-                    PreferenceConstant.IS_USER_LOGIN.putBoolean(true)
-
-                    requireActivity().setResult(Activity.RESULT_OK, Intent())
-                    requireActivity().finish()
-                }
-            }
-        }
-    }
-
-    private inline fun <reified T> convertModelToJson(data: T): String {
-        val adapter = Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(T::class.java)
-        return adapter.toJson(data)
+        })
     }
 }

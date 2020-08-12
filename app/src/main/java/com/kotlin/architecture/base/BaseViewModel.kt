@@ -5,11 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    sealed class ViewState {
-        object Idle : ViewState()
-        object InProgress : ViewState()
-        data class Validate(var status: Int = 0, var message: Int) : ViewState()
-        data class Succeed<T>(var data: T) : ViewState()
-        data class Failed(var status: Int = 0, var message: String? = null) : ViewState()
+    sealed class ResultOf<out T> {
+        data class Validation(val status : Int, val message: String): ResultOf<Nothing>()
+        object InProgress : ResultOf<Nothing>()
+        data class Success<out R>(val value: R): ResultOf<R>()
+        data class Failure(val status : Int, val message: String?, val throwable: Throwable?): ResultOf<Nothing>()
     }
 }

@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"/>
 

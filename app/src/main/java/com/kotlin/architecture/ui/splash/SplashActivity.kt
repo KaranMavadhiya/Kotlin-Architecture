@@ -7,12 +7,13 @@ import com.kotlin.architecture.R
 import com.kotlin.architecture.base.BaseViewModel
 import com.kotlin.architecture.base.DataBindingBaseActivity
 import com.kotlin.architecture.databinding.ActivitySplashBinding
-import com.kotlin.architecture.ui.home.HomeActivity
+import com.kotlin.architecture.ui.MainActivity
+import com.kotlin.architecture.utils.startMyActivity
 
 class SplashActivity : DataBindingBaseActivity<ActivitySplashBinding, BaseViewModel>(BaseViewModel::class.java) , Animation.AnimationListener {
 
     private fun performNavigation() {
-        startActivity(HomeActivity::class.java)
+        this.startMyActivity(MainActivity::class.java)
         finish()
     }
 

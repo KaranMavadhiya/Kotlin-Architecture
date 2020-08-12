@@ -10,7 +10,6 @@ import com.kotlin.architecture.registration.R
 import com.kotlin.architecture.registration.databinding.FragmentForgotPasswordBinding
 import com.kotlin.architecture.utils.StatusCode
 import com.kotlin.architecture.utils.ViewUtil
-import com.network.base.BaseResponseModel
 
 class ForgotPasswordFragment : DataBindingBaseFragment<FragmentForgotPasswordBinding, ForgotPasswordViewModel>(ForgotPasswordViewModel::class.java), ItemClickListener {
 
@@ -57,49 +56,40 @@ class ForgotPasswordFragment : DataBindingBaseFragment<FragmentForgotPasswordBin
 
     private fun setObserver() {
         // set BaseViewModel.ViewState observer
-        viewModel.stateLiveData.observe(this, Observer(this::manageState))
-    }
+        viewModel.forgotPasswordModel.observe(this, Observer { result ->
 
-    private fun manageState(viewState: BaseViewModel.ViewState) {
-        when (viewState) {
-            BaseViewModel.ViewState.Idle -> {
-                with(binding) {
-                    inputEmail.error = null
-                }
-            }
-            BaseViewModel.ViewState.InProgress -> {
+            if (result is BaseViewModel.ResultOf.InProgress) {
                 showProgressDialog(requireActivity().supportFragmentManager)
             }
-            is BaseViewModel.ViewState.Validate -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
+            result.validate { status, message ->
+                when (status) {
                     StatusCode.STATUS_CODE_EMAIL_VALIDATION -> {
-                        binding.inputEmail.error = getString(viewState.message)
+                        binding.inputEmail.error = message
                     }
                     StatusCode.STATUS_CODE_INTERNET_VALIDATION -> {
-                        Toast.makeText(context, getString(viewState.message), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Failed -> {
-                dismissProgressDialog()
 
-                when (viewState.status) {
+            result.success {
+                dismissProgressDialog()
+                Toast.makeText(context,   it.message, Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressed()
+            }
+
+            result.failure { status, message, _ ->
+                dismissProgressDialog()
+                when (status) {
                     StatusCode.STATUS_CODE_SERVER_ERROR -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                     else -> {
-                        Toast.makeText(context, viewState.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            is BaseViewModel.ViewState.Succeed<*> -> {
-                dismissProgressDialog()
-                if (viewState.data != null && viewState.data is BaseResponseModel<*>) {
-                    Toast.makeText(context, (viewState.data as BaseResponseModel<*>).message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        })
     }
 }
