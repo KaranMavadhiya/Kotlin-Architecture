@@ -10,19 +10,11 @@ object APIManager {
     private const val baseUrl = BuildConfig.API_BASE_URL
     private const val isDebug = true
 
+    fun <T> getRetrofitInstance(header: HashMap<String, String>? = null, interfaceClass: Class<T>): T {
+        return RetrofitClientFactory.getInstance(baseUrl = baseUrl, header = header, interfaceClass = interfaceClass, isDebug = isDebug)
+    }
+
     fun <T> getRetrofitInstance(interfaceClass: Class<T>): T {
-        return RetrofitClientFactory.getInstance(baseUrl, interfaceClass,isDebug)
-    }
-
-    fun <T> getRetrofitInstance(header: HashMap<String, String>, interfaceClass: Class<T>): T {
-        return RetrofitClientFactory.getInstance(baseUrl,header, interfaceClass,isDebug)
-    }
-
-    fun getOkHttpInstance(): OkHttpClient {
-        return OkHttpClientFactory.getInstance(isDebug)
-    }
-
-    fun getOkHttpInstance(header: HashMap<String, String>): OkHttpClient {
-        return OkHttpClientFactory.getInstance(header, isDebug)
+        return RetrofitClientFactory.getInstance(baseUrl = baseUrl, interfaceClass = interfaceClass, isDebug = isDebug)
     }
 }

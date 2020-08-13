@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitClientFactory {
 
-    private fun getService(baseUrl: String, header: HashMap<String, String>?, isDebug: Boolean): Retrofit {
+    private fun getService(baseUrl: String, header: HashMap<String, String>? = null, isDebug: Boolean = false): Retrofit {
 
         val moshiConverter = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
@@ -21,29 +21,7 @@ object RetrofitClientFactory {
             .build()
     }
 
-    /*
-     * default value of header: HashMap<String, String> is null
-     * default value of isDebug: Boolean is false
-     */
-    fun <T> getInstance(baseUrl: String, interfaceClass: Class<T>): T {
-        return getService(baseUrl, null, false).create(interfaceClass)
-    }
-
-    /*
-     * default value of isDebug: Boolean is false
-     */
-    fun <T> getInstance(baseUrl: String, header: HashMap<String, String>, interfaceClass: Class<T>): T {
-        return getService(baseUrl, header, false).create(interfaceClass)
-    }
-
-    /*
-     * default value of header: HashMap<String, String> is null
-     */
-    fun <T> getInstance(baseUrl: String, interfaceClass: Class<T>, isDebug: Boolean): T {
-        return getService(baseUrl, null, isDebug).create(interfaceClass)
-    }
-
-    fun <T> getInstance( baseUrl: String, header: HashMap<String, String>, interfaceClass: Class<T>, isDebug: Boolean): T {
+    fun <T> getInstance( baseUrl: String, header: HashMap<String, String>? = null, interfaceClass: Class<T>, isDebug: Boolean = false): T {
         return getService(baseUrl, header, isDebug).create(interfaceClass)
     }
 }

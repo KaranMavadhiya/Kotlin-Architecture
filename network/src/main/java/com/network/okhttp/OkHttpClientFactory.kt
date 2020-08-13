@@ -6,13 +6,13 @@ import java.util.concurrent.TimeUnit
 
 object OkHttpClientFactory {
 
-    private const val CONNECTION_TIME_OUT: Long = 1
+    private const val CONNECTION_TIME_OUT: Long = 30
     private lateinit var okHttpInstance: OkHttpClient.Builder
 
-    fun getInstance(header: HashMap<String, String>?, isDebug: Boolean): OkHttpClient {
+    fun getInstance(header: HashMap<String, String>? = null, isDebug: Boolean = false): OkHttpClient {
 
         okHttpInstance = OkHttpClient().newBuilder()
-        okHttpInstance.connectTimeout(CONNECTION_TIME_OUT, TimeUnit.MINUTES)
+        okHttpInstance.connectTimeout(CONNECTION_TIME_OUT, TimeUnit.SECONDS)
 
         // Add Header if header != null and header.size > 0
         if (header != null && header.size > 0) {
@@ -34,27 +34,5 @@ object OkHttpClientFactory {
         }
 
         return okHttpInstance.build()
-    }
-
-    /*
-     * default value of header: HashMap<String, String> is null
-     * default value of isDebug: Boolean is false
-     */
-    fun getInstance(): OkHttpClient {
-        return getInstance(null, false)
-    }
-
-    /*
-     * default value of header: HashMap<String, String> is null
-     */
-    fun getInstance(isDebug: Boolean): OkHttpClient {
-        return getInstance(null, isDebug)
-    }
-
-    /*
-     * default value of isDebug: Boolean is false
-     */
-    fun getInstance(header: HashMap<String, String>): OkHttpClient {
-        return getInstance(header, false)
     }
 }
